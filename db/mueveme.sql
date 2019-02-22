@@ -11,7 +11,6 @@ CREATE TABLE usuarios
   , email       VARCHAR(255) NOT NULL UNIQUE
   , password    VARCHAR(60)  NOT NULL
   , token       VARCHAR(255) NOT NULL
-  , verificado  CHAR(1)
 );
 
 DROP TABLE IF EXISTS categorias CASCADE;
@@ -41,7 +40,6 @@ CREATE TABLE noticias
                                    REFERENCES usuarios (id)
                                    ON DELETE NO ACTION
                                    ON UPDATE CASCADE
-  /* Falta crear created_at */
 );
 
 DROP TABLE IF EXISTS comentarios CASCADE;

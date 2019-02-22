@@ -66,7 +66,6 @@ class UsuariosController extends Controller
     public function actionCreate()
     {
         $model = new Usuarios(['scenario' => Usuarios::SCENARIO_CREATE]);
-        $model->setToken();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->actionEmail($model);
@@ -136,7 +135,7 @@ class UsuariosController extends Controller
     {
         $model = $this->findModel($id);
         if ($model->token === $token) {
-            $model->verificado = 's';
+            $model->token = null;
             if ($model->save()) {
                 Yii::$app->session->setFlash('success', 'Cuenta verificada, ya puede loguearse.');
             } else {

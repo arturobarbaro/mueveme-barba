@@ -141,6 +141,7 @@ class Usuarios extends \yii\db\ActiveRecord implements IdentityInterface
         }
         if ($insert) {
             if ($this->scenario === self::SCENARIO_CREATE) {
+                $this->token = Yii::$app->security->generateRandomString();
                 goto salto;
             }
         } elseif ($this->scenario === self::SCENARIO_UPDATE) {
@@ -153,10 +154,5 @@ class Usuarios extends \yii\db\ActiveRecord implements IdentityInterface
             }
         }
         return true;
-    }
-
-    public function setToken()
-    {
-        $this->token = Yii::$app->security->generateRandomString();
     }
 }
