@@ -125,3 +125,45 @@ INSERT INTO comentarios (cuerpo, noticia_id, padre_id, usuario_id)
 VALUES ('Muy buen articulo Paco!!', 1, null, 1)
      , ('A Enrique le vendria bien.', 2, null, 2)
      , ('Y a garci tambien!', 2, 2, 1);
+
+DROP TABLE IF EXISTS actividades CASCADE;
+
+CREATE TABLE actividades
+(
+  id        BIGSERIAL    PRIMARY KEY
+, actividad VARCHAR(255) NOT NULL UNIQUE
+, gastoCalorico NUMERIC(4) NOT NULL
+);
+
+DROP TABLE IF EXISTS entrenamientos CASCADE;
+
+CREATE TABLE entrenamientos
+(
+ id            BIGSERIAL    PRIMARY KEY
+, usuario_id    BIGINT       NOT NULL
+                                    REFERENCES usuarios (id)
+                                    ON DELETE NO ACTION
+                                    ON UPDATE CASCADE
+, actividad_id  BIGINT       NOT NULL
+                                    REFERENCES actividades (id)
+                                    ON DELETE NO ACTION
+                                    ON UPDATE CASCADE
+, anotacion     VARCHAR(255)
+, fecha         TIMESTAMP    DEFAULT CURRENT_TIMESTAMP
+, duracion      SMALLINT     DEFAULT 0
+                                    CONSTRAINT ck_entrenamientos_duracion_positiva
+                                    CHECK (coalesce(duracion, 0) >= 0)
+);
+INSERT INTO actividades (actividad, gastoCalorico)
+VALUES ('Caminar', 006)
+     , ('Ciclismo', 012)
+     , ('Correr', 015)
+     , ('Crossfit', 016)
+     , ('Entrenamiento de fuerza', 014)
+     , ('Otro', 0);
+
+INSERT INTO entrenamientos (usuario_id, actividad_id, anotacion, fecha, duracion)
+VALUES (1,2,'',DEFAULT,15)
+     , (1,3,'...',DEFAULT,30)
+     , (1,1,'...',DEFAULT,30)
+     , (2,4,'...',DEFAULT,90);
